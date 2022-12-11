@@ -1,30 +1,19 @@
+// Globals
 import { useState, useEffect, useCallback } from 'react'
 import './styles/main.scss'
 
+// Functions
 import newWord from './utils/newWord';
 import checkWord from './utils/checkWord';
 
+// Components
+import Keyboard from './components/Keyboard';
+import Cell from './components/Cell';
+import MsgModal from './components/MsgModal';
+
+// App Config
 const trys = 6;
-const chars = 5;
-
-type cellProps = {
-  isSeen: boolean,
-  isMatch: boolean,
-  char: string,
-  validate: boolean
-}
-
-const Cell: React.FC<cellProps> = ({isSeen, isMatch, char, validate}) => {
-  let classList = ["cell"];
-
-  if (validate) {
-    isSeen && classList.push("seen");
-    isMatch && classList.push("match");
-    char !== "" && classList.push("animate");
-  }
-
-  return <div className={classList.join(" ")}>{char}</div>
-}
+const chars = 5; // will need to update dictionary to match char count
 
 const App = () => {
 
@@ -33,11 +22,10 @@ const App = () => {
   const [answer, setAnswer] = useState("")
   const [win, setWin] = useState(false)
   const [err, setErr] = useState("")
-
   const guess = attempts[attemptCount]
 
   useEffect(() => {
-    if (answer.length !== chars) {
+    if (!answer) {
       newWord().then(word => setAnswer(word))
     }
 
@@ -67,7 +55,6 @@ const App = () => {
     } 
   }
 
-  //
   const prepareGuess = (key: string) => {
     const clone = attempts.map((c,i) => i === attemptCount ? key : c)
     setAttempts(clone)
@@ -113,6 +100,7 @@ const App = () => {
   }
 
   const restart = () => {
+    // clear states and request new word
     setAttempts([""])
     setAttemptCount(0)
     setWin(false)
@@ -124,35 +112,23 @@ const App = () => {
       <div className="grid">
         {grid}
       </div>
-      {[
-        ['q','w','e','r','t','y','u','i','o','p'],
-        ['a','s','d','f','g','h','j','k','l'],
-        ['Enter','z','x','c','v','b','n','m','Backspace']].map((row,i) => (
-        <div className="row" key={i}>
-          {row.map(key => (
-            <div 
-              key={key}
-              onClick={() => keyInput(key)} 
-              className={`key ${attempts.slice(0,attemptCount).join().indexOf(key) !== -1 ? answer.indexOf(key) !== -1 ? 'match' : 'found' : null}`}
-            >{key}</div>))}
-        </div>
-      ))}
+  
+      <Keyboard handleClick={keyInput} attempts={attempts} attemptCount={attemptCount} answer={answer}/>
+
+      {/* Win/End Message */}
       {win ? (
-        <div className="msg-modal">
-          <h2>🎉 Congratulations!! 🎉</h2>
-          <a className="btn" href="" onClick={e => {e.preventDefault(); restart()}}>Restart</a>
-        </div>
+        <MsgModal message="🎉 Congratulations!! 🎉" restart={restart}/>
       ): attemptCount === trys ? (
-        <div className="msg-modal">
-          <h2>Better luck next time!</h2>
-          <a className="btn" href="" onClick={e => {e.preventDefault(); restart()}}>Restart</a>
-        </div>
+        <MsgModal message="Better luck next time!" restart={restart}/>
       ) : null}
+
+      {/* Error Message */}
       {err ? (
         <div className="err-modal">
           <p>{err}</p>
         </div>
       ): null}
+
     </div>
   )
 }
