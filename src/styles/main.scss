@@ -1,0 +1,107 @@
+$color--seen: orange;
+$color--match: green;
+
+  #root {
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .grid { margin-bottom: 1em }
+  .row { display: flex }
+  
+  .cell {
+    --cell-size: 55px;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    line-height: var(--cell-size);
+    background-color: #fff;
+    margin: 3px;
+    border-radius: 4px;
+    color: black;
+    transition: 1s ease;
+    overflow: hidden;
+    font-weight: bold;
+    font-size: 1.65em;
+    color: black;
+    user-select: none;
+    text-transform: uppercase;
+    &.seen,&.match {color: white}
+    &.seen{background-color: $color--seen}
+    &.match{background-color: $color--match}
+    &.animate {animation: fadeIn 1s ease;}
+  }
+
+  @keyframes fadeIn {
+    from { transform: rotateX(0deg) }
+    to { transform: rotateX(360deg) }
+  }
+  
+  @for $i from 1 through 5 {
+      .cell.animate:nth-child(#{$i}){
+        animation-delay: .1*$i+s;
+        transition-delay: .1*$i+s;
+      }
+  }
+  
+  .row {
+    width: 100%;
+    max-width: 650px;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .key {
+    flex: 1;
+    padding: 1em;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    margin: 0.2em;
+    user-select: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    &:hover { background-color: rgba(255,255,255,0.45); }
+    &.match { background-color: $color--match; }
+    &.found{ background-color: rgba(255,255,255,0.25); }
+  }
+  
+  .msg-modal, .err-modal {
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%,-50%);
+    background-color: #000000;
+    border-radius: 4px;
+    padding: 3em;
+    animation: showWin .2s ease;
+    box-shadow: 0px 20px 50px rgba(0,0,0,0.3);
+    font-weight: 600;
+    max-width: 100%;
+  }
+  
+  .err-modal{
+    padding: .5em 1em;
+  }
+  
+  @keyframes showWin {
+    from {
+      opacity: 0;
+      transform: translate(-50%,0%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%,-50%) ;
+    }
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    background-color: hsl(245, 100%, 61%);
+    color: white;
+    border-radius: 4px;
+  }
+  
+  
