@@ -41,16 +41,17 @@ const App = () => {
   },[attempts, attemptCount, err, answer])
 
   const keyInput = (key: string) => {
-    if(key == 'Enter') {
+    key = key.toLowerCase();
+    if(key == 'enter') {
       submitAnswer()
       if(guess === answer) {
         setWin(true)
       }
-    } else if (key == 'Backspace') {
+    } else if (key == 'backspace') {
       prepareGuess(guess.substring(0,guess.length-1))
     } else if (RegExp(/^[a-zA-Z]{1}$/).test(key)){
       if (guess.length < chars) {
-        prepareGuess(guess + key.toLowerCase())
+        prepareGuess(guess + key)
       }
     } 
   }
@@ -129,6 +130,7 @@ const App = () => {
         </div>
       ): null}
 
+      <a href="">Design By Matt</a>
     </div>
   )
 }

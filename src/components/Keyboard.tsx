@@ -28,7 +28,7 @@ const keyArray = [
     {name: 'l', key: 'l'},
   ],
   [
-    {name: <IconBackspace/>, key: 'enter'},
+    {name: <IconBackspace/>, key: 'Enter'},
     {name: 'z', key: 'z'},
     {name: 'x', key: 'x'},
     {name: 'c', key: 'c'},
