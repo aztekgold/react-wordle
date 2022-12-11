@@ -130,7 +130,7 @@ const App = () => {
         </div>
       ): null}
 
-      <a href="">Design By Matt</a>
+      <a href="https://www.instagram.com/design_by_matt/" className="credit">WRDL by Matt Smith</a>
     </div>
   )
 }
