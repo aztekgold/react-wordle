@@ -44,9 +44,6 @@ const App = () => {
     key = key.toLowerCase();
     if(key == 'enter') {
       submitAnswer()
-      if(guess === answer) {
-        setWin(true)
-      }
     } else if (key == 'backspace') {
       prepareGuess(guess.substring(0,guess.length-1))
     } else if (RegExp(/^[a-zA-Z]{1}$/).test(key)){
@@ -85,6 +82,9 @@ const App = () => {
           if(isValid) {
             setAttemptCount(curr => curr + 1)
             setAttempts(curr => [...curr, ""])
+            if(guess === answer) {
+              setWin(true)
+            }
           } else {
             showErr("Word not in wordlist")
           }
